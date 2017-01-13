@@ -12,12 +12,12 @@ var engine = {
 		var search = $("#wiki-search").val();
 		
 		// clear page data if no entry is given
-		var url = "https://wind-bow.gomix.me/twitch-api/streams/esl_sc2";
+		var url = "esl_sc2";
 		
 		// jQuery call to Twitch API
 		$.ajax({
 			type: "get",
-			url: "https://wind-bow.gomix.me/twitch-api/streams/esl_sc2",
+			url: "https://wind-bow.gomix.me/twitch-api/streams/" + url,
 			headers: {
 				Accept: 'application/vnd.twitchtv.v3+json'
 			}
