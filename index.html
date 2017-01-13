@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Wikipedia Viewer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-primary-color">
+	<main>
+		<section class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-12 col-md-11 col-lg-9 col-xl-8">
+					<h1 class="header text-primary-color">FCC Wikipedia viewer</h1>
+					<div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 center search notSm">
+						<!--<div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-10">-->
+						<div class="input-group">
+							<span class="input-group-btn">
+            	<button class="btn btn-secondary" id="wiki-search-random" type="button">Go random!</button>
+            </span>
+							<input type="search" class="form-control" name="wiki-search" id="wiki-search" placeholder="Search for...">
+							<span class="input-group-btn">
+            	<button class="btn btn-secondary" id="wiki-search-button" type="button">Wiki it!</button>
+            </span>
+						</div>
+					</div>
+					<div class="onlySm">
+						<div>
+							<span class="input-group-btn">
+                  	<button class="btn btn-secondary" id="wiki-search-random" type="button">Go random!</button>
+                </span>
+						</div>
+						<div>
+							<input type="search" class="form-control" name="wiki-search" id="wiki-search" placeholder="Search for...">
+						</div>
+						<div>
+							<span class="input-group-btn">
+								<button class="btn btn-secondary" id="wiki-search-button" type="button">Wiki it!</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="nav row justify-content-center"></div>
+			<div id="results" class="row"></div>
+			<div class="nav row justify-content-center"></div>
+		</section>
+	</main>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		crossorigin="anonymous"></script>
+	<script src="scripts\engine.js"></script>
+	<script src="scripts\script.js"></script>
+</body>
+
+</html>
