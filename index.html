@@ -11,72 +11,43 @@
 </head>
 
 <body class="dark-primary-color">
-	<main>
-		<h1 class="header text-primary-color">Twitch viewer</h1>
-		<section class="container">
+	<div class="container">
+		<header>
 			<div class="row justify-content-center">
-			<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-    <a class="navbar-brand" href="#">Hidden brand</a>
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
+				<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01"
+						aria-expanded="false" aria-label="Toggle navigation">
+   					<span class="navbar-toggler-icon"></span>
+  				</button>
+					<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+						<a class="navbar-brand" href="#">FCC Twitch viewer</a>
+						<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+							<li class="nav-item active">
+								<a class="nav-link" href="#">Players <span class="sr-only">(current)</span></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Channels</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link disabled" href="#">Streams</a>
+							</li>
+						</ul>
+						<form class="form-inline my-2 my-lg-0">
+							<input class="form-control mr-sm-2" type="text" placeholder="Search">
+							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+						</form>
+					</div>
+				</nav>
 			</div>
-		</section>
-		<section class="container">
+		</header>
+		<main>
 			<div class="row justify-content-center">
-				<div class="col-12 col-sm-12 col-md-11 col-lg-9 col-xl-8">
-					<div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 center search notSm">
-						<!--<div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-10">-->
-						<div class="input-group">
-							<span class="input-group-btn">
-            		<button class="btn btn-secondary" id="wiki-search-random" type="button">Go random!</button>
-            </span>
-							<input type="search" class="form-control" name="wiki-search" id="wiki-search" placeholder="Search for...">
-							<span class="input-group-btn">
-            	<button class="btn btn-secondary" id="wiki-search-button" type="button">Wiki it!</button>
-            </span>
-						</div>
-					</div>
-					<div class="onlySm">
-						<div>
-							<span class="input-group-btn">
-                  	<button class="btn btn-secondary" id="wiki-search-random" type="button">Go random!</button>
-                </span>
-						</div>
-						<div>
-							<input type="search" class="form-control" name="wiki-search" id="wiki-search" placeholder="Search for...">
-						</div>
-						<div>
-							<span class="input-group-btn">
-								<button class="btn btn-secondary" id="wiki-search-button" type="button">Wiki it!</button>
-							</span>
-						</div>
-					</div>
+				<div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-9">
+					<!-- content div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3" -->
 				</div>
 			</div>
-			<div class="nav row justify-content-center"></div>
-			<div id="results" class="row"></div>
-			<div class="nav row justify-content-center"></div>
-		</section>
 	</main>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 		crossorigin="anonymous"></script>
 	<script src="scripts\engine.js"></script>
