@@ -1,26 +1,51 @@
 
 var engine = {
 	dataJSON: [],
-	currentPage: 0,
+	// currentPage: 0,
 	self: this,
 	
-	// app makes request to WIKI API
+	users: ['freecodecamp', '1'],// array of users and their channels
+
+	// app makes request to Twitch API
 	getData: function (event) {
 		var self = this;
 		
 		// pick value from input form
-		var search = $("#wiki-search").val();
+		var search = $("#twitch-search").val();
 		
 		// clear page data if no entry is given
 		var url = "esl_sc2";
 		
 		// jQuery call to Twitch API
-		$.ajax({
+		var streams = {
 			type: "get",
-			url: "https://wind-bow.gomix.me/twitch-api/streams/" + url,
+			url: "https://wind-bow.gomix.me/twitch-api/streams/esl_sc2",
 			headers: {
 				Accept: 'application/vnd.twitchtv.v3+json'
 			}
+		};
+		var streams2 = {
+			type: "get",
+			url: "https://wind-bow.gomix.me/twitch-api/streams/freecodecamp",
+			headers: {
+				Accept: 'application/vnd.twitchtv.v3+json'
+			}
+		};
+		var bool = 0;
+		
+		function setAjaxData(element) {
+			if(bool == 0){
+				bool = 1;
+				return $.ajax(streams);
+			}
+			else{
+				return $.ajax(streams2);
+			}
+		};
+		var arrayOfAjax = []
+		arrayOfAjax.push(streams, streams2)	;
+
+		$.when.apply($, arrayOfAjax).done(
 			// self.dataJSON = [];
 			// var length = data.query.search.length;
 			// for (var i = 0; i < length; i++) {
@@ -36,12 +61,33 @@ var engine = {
 			// 		self.dataJSON.push(arr);
 				// }
 			// }
-		})
-			.done(function(data) {
-    			alert( "success" );
-				console.log(data)
-  			});
+				fillCountryCapitals)
+				// function(data, data1) {
+    			// alert( "success" );
+				// console.log(data)
+				// console.log(data1)
+  			// },
+			//   	function(data, data1){
+			// 	console.log("failure");
+			//   }
+			//   );
+	function fillCountryCapitals (){
+		var countries = [];
+        var responses = arguments;
+        for(i in responses){
+            console.log(responses[i]);
+            // countries.push(responses[i][0][0].nativeName)
+        }  
+        // $('#countries').text(countries);
+	}
 	},
+			// 		$.get( "test.php" ).then(
+		//   function() {
+		//     alert( "$.get succeeded" );
+		//   }, function() {
+		//     alert( "$.get failed!" );
+		//   }
+		// );
 
 	// Random button
 	getRandomData: function () {
