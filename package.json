@@ -1,0 +1,28 @@
+{
+  "name": "twitchviewer",
+  "version": "1.0.0",
+  "description": "\"# WikipediaViewer\" \r \"# twitchViewer\"",
+  "main": "index.html",
+  "dependencies": {
+    "jQuery": "3.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "grunt": "^1.0.1",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zapalagrzegorz/twitchViewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zapalagrzegorz/twitchViewer/issues"
+  },
+  "homepage": "https://github.com/zapalagrzegorz/twitchViewer#readme"
+}
