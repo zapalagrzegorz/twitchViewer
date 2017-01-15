@@ -111,16 +111,17 @@ var engine = {
 									'<div class="col-2" style="padding-right:0;">' +
 										'<a href="https://www.twitch.tv/esl_sc2">
 											'<img class="img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/esl_sc2-profile_image-d6db9488cec97125-300x300.jpeg">' +
-			// 							</a>
-			// 						</div>
-			// 						<div class="col-10">
-			// 							<p><a href="https://www.twitch.tv/esl_sc2">ESL_SC2</a></p>
-			// 							<p>followers: <span id="#followers">141604</span></p>
-			// 							<p>Launched: <span id="#created">2017-01-14T11:07:23Z</span></p>
-			// 						</div>
-			// 					</div>
-			// 				</div>
-			// 			</article>
+										'</a>' +
+									'</div>' +
+									'<div class="col-10">' +
+										'<p><a href="' + '">' + + '</a></p>' +
+										'<p>followers' + 141604 + '</p>' +
+										'<p>Launched: + ' + 2017-01-14 + '</p>' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+						'</article>';
+			$(find).append(streamData)
 		}
 	}
 }
