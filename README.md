@@ -1,2 +1,0 @@
-"# WikipediaViewer" 
-"# twitchViewer" 

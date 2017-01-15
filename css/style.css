@@ -2,7 +2,18 @@
 
 .dark-primary-color    { background: #876CE1; }
 
-
+[class^="icon-"], [class*=" icon-"] {
+    display: inline-block;
+    width: 100%;
+}
+a {
+    color: #000;
+}
+a:hover {
+    text-decoration: none;
+    color: #876CE1;
+    transition: color 0.3s;
+}
 header {
     background-color: #292b2c;
 }
@@ -11,7 +22,7 @@ header {
     height: auto;
 }
 .channel {
-    margin: 3rem 0;
+    margin: 2rem 0;
 }
 .channelPreview {
 
@@ -21,7 +32,7 @@ header {
     background-color: #FFF;
     padding: 10px;
 }
-.channelDescription > p {
+.channelDescription  p {
     margin: 0;
 }
 

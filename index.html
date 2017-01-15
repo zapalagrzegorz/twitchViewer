@@ -8,6 +8,7 @@
 	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 		crossorigin="anonymous">-->
 	<link rel="stylesheet" href="bower_components\bootstrap\dist\css\bootstrap.min.css">
+	<link src="bower_components\tether\dist\css\tether.min.css">
 	<link rel="stylesheet" href="css\font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css\style.css">
 </head>
@@ -50,25 +51,28 @@
 						<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">
 							<div class="channelPreview"><img class="img" src="https://static-cdn.jtvnw.net/previews-ttv/live_user_esl_sc2-640x360.jpg"></div>
 							<div class="channelDescription">
-								<h3>Video: <a href="https://www.twitch.tv/directory/game/StarCraft%20II">StarCraft II</a></h3>
+								<h3><a href="https://www.twitch.tv/directory/game/StarCraft%20II">StarCraft II</a></h3>
 								<div class="row">
 									<div class="col-10">
 										<!--status:-->
 										<h4><a href="https://www.twitch.tv/esl_sc2">RERUN: Stats vs. ByuL [PvZ] - Semifinal Map 2 - IEM Gyeonggi 2016"</a></h4> 
 									</div>
-									<div class="col-2">
-										<p><i class="fa fa-2x fa-user-circle" aria-hidden="true"></i> 385</p>
+									<div class="col-2" style="text-align: center">
+										<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
+										<p><span id="#online">385</span> online</p>
 									</div>
 								</div>
 								<!-- display_name: -->
 								<div class="row">
-									<div class="col-2">
-										<img class="img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/esl_sc2-profile_image-d6db9488cec97125-300x300.jpeg">
+									<div class="col-2" style="padding-right:0;">
+										<a href="https://www.twitch.tv/esl_sc2">
+											<img class="img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/esl_sc2-profile_image-d6db9488cec97125-300x300.jpeg">
+										</a>
 									</div>
 									<div class="col-10">
-										<p>"ESL_SC2"</p>
-										<p>followers: 141604</p>
-										<p>created_at : "2017-01-14T11:07:23Z"</p>
+										<p><a href="https://www.twitch.tv/esl_sc2">ESL_SC2</a></p>
+										<p>followers: <span id="#followers">141604</span></p>
+										<p>Launched: <span id="#created">2017-01-14T11:07:23Z</span></p>
 									</div>
 								</div>
 							</div>
@@ -111,7 +115,8 @@
 	<script src="bower_components\jquery\dist\jquery.min.js"> </script>
 	<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 		crossorigin="anonymous"></script>-->
-	<script src=bower_components\bootstrap\dist\js\bootstrap.min.js></script>
+	<script src="bower_components\tether\dist\js\tether.min.js"></script>
+	<script src="bower_components\bootstrap\dist\js\bootstrap.min.js"></script>
 	<script src="scripts\engine2.js"></script>
 	<script src="scripts\script.js"></script>
 </body>
