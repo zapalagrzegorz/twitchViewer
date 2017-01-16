@@ -50,7 +50,7 @@ var engine = {
 					promises.push(ajaxRequestUsers(self.users[i]));
 				}
 				else {
-					showStreamData(responses[i]);
+					showStreamData(responses[i][0].stream);
 				}
 			}
 			if (promises.length !== 0) {
@@ -75,53 +75,89 @@ var engine = {
 				url: "https://wind-bow.gomix.me/twitch-api/users/" + user,
 				headers: {
 					Accept: 'application/vnd.twitchtv.v3+json'
-				},
-				success: function (response) {
-					console.log(response);
-				},
-				error: function (response) {
-					console.log("Error")
 				}
 			});
 		}
+
 		function handleSuccessUsers() {
 			var responses = arguments;
 			for (i in responses) {
-				console.log(responses[i]);
+				if (!responses[i].hasOwnProperty(error)) {
+
+				}
+				else {
+					console.log(responses[i])
+				}
 			}
 		}
 
 		// receives object from Twitch API
-		// produces HTML output 
-		function showStreamData(stream){
-			var streamData = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">' +
-								'<div class="channelPreview"><img class="img" src="' + https:static-cdn.jtvnw.net/previews-ttv/live_user_esl_sc2-640x360.jpg  + '"></div>' +
+		// produces HTML output for stream object
+		function showStreamData(streamData){
+			console.log(streamData);			
+			var stream = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">' +
+							'<div class="channelPreview"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i>' +
+								'<div class="darken"><img class="img" src="'+ streamData.preview.large  +'"></div>' +
+							'</div>' +
 								'<div class="channelDescription">' +
-									'<h3><a href="' + https:www.twitch.tv/directory/game/StarCraft%20II '">' + +'</a></h3>' +
+									'<h3><a href="https://www.twitch.tv/game/' + streamData.channel.game + '">'+ streamData.channel.game +'</a></h3>' +
 									'<div class="row">' +
 										'<div class="col-10">' +
-											'<h4><a href="' + https:www.twitch.tv/esl_sc2 + '">' + +'</a></h4>' +
+											'<h4><a href="' + streamData.channel.url + '">'+ streamData.channel.status +'</a></h4>' +
 										'</div>' +
 										'<div class="col-2" style="text-align: center">' +
-											'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>'
-											'<p>' + +  'online</p>' +
+											'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>' +
+											'<p>' + streamData.viewers +' online</p>' +
 										'</div>' +
 									'</div>' +
 									'<div class="row">' +
-									'<div class="col-2" style="padding-right:0;">' +
-										'<a href="https://www.twitch.tv/esl_sc2">
-											'<img class="img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/esl_sc2-profile_image-d6db9488cec97125-300x300.jpeg">' +
-										'</a>' +
-									'</div>' +
+										'<div class="col-2" style="padding-right:0;">' +
+											'<a href="' + streamData.channel.url + '">' +
+												'<img class="img" src="'+ streamData.channel.logo + '">' +
+											'</a>' +
+										'</div>' +
 									'<div class="col-10">' +
-										'<p><a href="' + '">' + + '</a></p>' +
-										'<p>followers' + 141604 + '</p>' +
-										'<p>Launched: + ' + 2017-01-14 + '</p>' +
+										'<p><a href="' + streamData.channel.url + '">' + streamData.channel.display_name + '</a></p>' +
+										'<p>followers: ' + streamData.channel.followers +'</p>' +
+										'<p>Launched: ' + (streamData.channel.created_at).substring(0,10) + '</p>' +
 									'</div>' +
 								'</div>' +
 							'</div>' +
 						'</article>';
-			$(find).append(streamData)
+			$('#streamContent').append(stream);
+		}
+		function showUserData(streamData){
+			console.log(streamData);			
+			var stream = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">' +
+							'<div class="channelPreview"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i>' +
+								'<div class="darken"><img class="img" src="'+ streamData.preview.large  +'"></div>' +
+							'</div>' +
+								'<div class="channelDescription">' +
+									'<h3><a href="https://www.twitch.tv/game/' + streamData.channel.game + '">'+ streamData.channel.game +'</a></h3>' +
+									'<div class="row">' +
+										'<div class="col-10">' +
+											'<h4><a href="' + streamData.channel.url + '">'+ streamData.channel.status +'</a></h4>' +
+										'</div>' +
+										'<div class="col-2" style="text-align: center">' +
+											'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>' +
+											'<p>' + streamData.viewers +' online</p>' +
+										'</div>' +
+									'</div>' +
+									'<div class="row">' +
+										'<div class="col-2" style="padding-right:0;">' +
+											'<a href="' + streamData.channel.url + '">' +
+												'<img class="img" src="'+ streamData.channel.logo + '">' +
+											'</a>' +
+										'</div>' +
+									'<div class="col-10">' +
+										'<p><a href="' + streamData.channel.url + '">' + streamData.channel.display_name + '</a></p>' +
+										'<p>followers: ' + streamData.channel.followers +'</p>' +
+										'<p>Launched: ' + (streamData.channel.created_at).substring(0,10) + '</p>' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+						'</article>';
+			$('#streamContent').append(stream);
 		}
 	}
 }

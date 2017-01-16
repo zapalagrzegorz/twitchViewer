@@ -2,18 +2,22 @@
 
 .dark-primary-color    { background: #876CE1; }
 
-[class^="icon-"], [class*=" icon-"] {
+/*[class^="icon-"], [class*=" icon-"] {
     display: inline-block;
     width: 100%;
-}
+}*/
+
 a {
     color: #000;
 }
 a:hover {
     text-decoration: none;
     color: #876CE1;
-    transition: color 0.3s;
+    transition: color 0.2s;
 }
+.fa {
+    z-index: 1;
+} 
 header {
     background-color: #292b2c;
 }
@@ -21,11 +25,17 @@ header {
     width: 100%;
     height: auto;
 }
+.channelPreview:hover .img {
+    opacity: 0.7;
+}
 .channel {
     margin: 2rem 0;
 }
+.darken {
+    background: black; 
+}
 .channelPreview {
-
+    position: relative;
     /*background: #AAA url(https://static-cdn.jtvnw.net/previews-ttv/live_user_esl_sc2-640x360.jpg) 0/cover no-repeat;*/
 }
 .channelDescription {
@@ -35,6 +45,17 @@ header {
 .channelDescription  p {
     margin: 0;
 }
+.icon-play{
+    color:#FFF; 
+    position: absolute; 
+    top: calc(50% - 10px); 
+    left: calc(50% - 10px);
+}
+.icon-play:hover {
+    color: #876CE1;
+    transition: color 0.2s;
+}
+
 
 @media screen and (max-width: 576px) {
     .onlySm {
