@@ -25,7 +25,7 @@ header {
     width: 100%;
     height: auto;
 }
-.channelPreview:hover .img {
+.channelPreview:hover .darken > .img {
     opacity: 0.7;
 }
 .channel {
@@ -44,6 +44,10 @@ header {
 }
 .channelDescription  p {
     margin: 0;
+}
+
+.user-bio {
+    text-align: justify;
 }
 .icon-play{
     color:#FFF; 
