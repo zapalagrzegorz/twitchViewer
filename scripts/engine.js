@@ -83,7 +83,7 @@ var engine = {
 			var responses = arguments;
 			for (i in responses) {
 				if (!responses[i].hasOwnProperty(error)) {
-
+					showUserData(responses[i]);
 				}
 				else {
 					console.log(responses[i])
