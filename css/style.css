@@ -59,7 +59,9 @@ header {
     color: #876CE1;
     transition: color 0.2s;
 }
-
+p.user-bio {
+    margin-bottom: 1rem;
+}  
 
 @media screen and (max-width: 576px) {
     .onlySm {
