@@ -100,7 +100,7 @@ var engine = {
 					var user = {};
 					user.bio = (responses[i][0].bio === null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
 					user.created_at = responses[i][0].created_at;
-					user.logo = (responses[i][0].logo === null ? 'css/Glitch.png' : responses[i][0].logo);
+					user.logo = (responses[i][0].logo === null ? 'css/assets/Glitch.png' : responses[i][0].logo);
 					user.display_name = responses[i][0].display_name;
 					usersData.push(user);
 
@@ -128,7 +128,7 @@ var engine = {
 				.done(function () {
 					var responses = arguments;
 					for (var i in responses) {
-						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/profile.png' : responses[i][0].video_banner);
+						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/assets/profile.png' : responses[i][0].video_banner);
 						usersData[i].followers = responses[i][0].followers;
 						if(responses[i][0].status.length > 44){
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
