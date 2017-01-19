@@ -4,10 +4,13 @@ var engine = {
 	// currentPage: 0,
 	self: this,
 
-	users: ['freecodecamp', 'esl_sc2', '123', 'kubon'],// array of users and their channels
+	users: ['polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion', 'freecodecamp', 'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', 'Bananasaurus_Rex'],// array of users and their channels
 
 	// app makes request to Twitch API
 	getUsersData: function (event) {
+		$('header').hide();
+		$('main').hide();
+		$('body').prepend('<div class="loading"><img class="imgCenter" src="css/assets/loading.gif"></div>');
 		var self = this;
 
 		// pick value from input form
@@ -50,12 +53,12 @@ var engine = {
 					promises.push(ajaxRequestUsers(self.users[i]));
 				}
 				else {
-					// showStreamData(responses[i][0].stream);
+					showStreamingUsers(responses[i][0].stream);
 				}
 			}
 			// make AJAX calls if there're any
 			if (promises.length !== 0) {
-				getUsersData(promises);
+				getUsersNotStr(promises);
 			}
 		}
 
@@ -66,10 +69,9 @@ var engine = {
 
 		// For users' not streaming do multiple parallel ajax requests
 		// @promises array of ajaxRequestUsers
-		function getUsersData(promises) {
+		function getUsersNotStr(promises) {
 			$.when.apply($, promises)
 				.done(handleSuccessUsers);
-
 			// gdy zwróci dane użytkowników, trzeba wywołać żadanie o chanell'ach  które są dostępne
 			// i odroczyć dane do czasu wykonania żadania
 		}
@@ -91,7 +93,7 @@ var engine = {
 				if (responses[i][0].hasOwnProperty('error')) {
 					console.log(responses[i][0]);
 					// wyświetl, że użytkownika nie ma
-					// showUknownUserData()
+					showUnkownUsers(responses[i][0]);
 				}
 				else {
 					// user not streaming exists 
@@ -122,69 +124,77 @@ var engine = {
 				}
 			});
 		}
+		// @usersData array
 		function getChannelsData(promises, usersData) {
 			$.when.apply($, promises)
 				// jak przekazać tablice usersdata do funkcji pararametru .done !!!
 				.done(function () {
 					var responses = arguments;
 					for (var i in responses) {
-						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/assets/profile.png' : responses[i][0].video_banner);
+						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner);
 						usersData[i].followers = responses[i][0].followers;
-						if(responses[i][0].status.length > 44){
+						usersData[i].status = (responses[i][0].status === null ? 'no status' : responses[i][0].status);
+						if(usersData[i].status.length > 44){
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
 						}
-						else{
-							usersData[i].status = responses[i][0].status;
-						}
 					}
-					showUsersData(usersData);
+					showUsersNotStreaming(usersData);
 				});
 		}
 
-		// receives object from Twitch API
-		// produces HTML output for stream object
-		// function showStreamData(streamData){
-		// 	console.log(streamData);
-		// 	userChannelData = {};
-		// 	var stream = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">' +
-		// 					'<div class="channelPreview"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i>' +
-		// 						'<div class="darken"><img class="img" src="'+ streamData.preview.large  +'"></div>' +
-		// 					'</div>' +
-		// 						'<div class="channelDescription">' +
-		// 							'<h3><a href="https://www.twitch.tv/game/' + streamData.channel.game + '">'+ streamData.channel.game +'</a></h3>' +
-		// 							'<div class="row">' +
-		// 								'<div class="col-10">' +
-		// 									'<h4><a href="' + streamData.channel.url + '">'+ streamData.channel.status +'</a></h4>' +
-		// 								'</div>' +
-		// 								'<div class="col-2" style="text-align: center">' +
-		// 									'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>' +
-		// 									'<p>' + streamData.viewers +' online</p>' +
-		// 								'</div>' +
-		// 							'</div>' +
-		// 							'<div class="row">' +
-		// 								'<div class="col-2" style="padding-right:0;">' +
-		// 									'<a href="' + streamData.channel.url + '">' +
-		// 										'<img class="img" src="'+ streamData.channel.logo + '">' +
-		// 									'</a>' +
-		// 								'</div>' +
-		// 							'<div class="col-10">' +
-		// 								'<p><a href="' + streamData.channel.url + '">' + streamData.channel.display_name + '</a></p>' +
-		// 								'<p>followers: ' + streamData.channel.followers +'</p>' +
-		// 								'<p>Launched: ' + (streamData.channel.created_at).substring(0,10) + '</p>' +
-		// 							'</div>' +
-		// 						'</div>' +
-		// 					'</div>' +
-		// 				'</article>';
-		// 	$('#streamContent').append(stream);
-		// }
-		function showUsersData(user) {
+		/***************************************
+		* Functions producing output for different users 
+		*
+		* *****************************************************/
+		function showStreamingUsers(user){
+			if (Array.isArray(user) ){
+				var content = user.forEach(produceOutput);
+				$('#streamContent').append(content);
+			}
+			else{
+				produceOutput(user);
+				$('#streamContent').append(produceOutput(user));
+			}
+
+			function produceOutput(user) {
+				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online">' +
+								'<div class="channelPreview">' +
+									'<img class="img" src="'+user.preview.large+'">' +
+								'</div>' +
+									'<div class="channelDescription">' +
+										'<h3><a href="https://www.twitch.tv/' + user.game + '">'+ user.game +'</a></h3>' +
+										'<div class="row">' +
+											'<div class="col-10">' +
+												'<h4><a href="https://www.twitch.tv/' + user.channel.name + '">'+ user.channel.status +'</a></h4> ' +
+											'</div>' +
+											'<div class="col-2" style="text-align: center">' +
+												'<p><span id="#online">'+ user.viewers +'</span> online</p>' +
+											'</div>' +
+										'</div>' +
+										'<div class="row">' +
+											'<div class="col-2" style="padding-right:0;">' +
+												'<a href="https://www.twitch.tv/' + user.channel.name + '">' +
+													'<img class="img" src="'+ user.channel.logo + '">' +
+												'</a>' +
+											'</div>' +
+										'<div class="col-10">' +
+											'<p>followers: ' + user.channel.followers + '</p>' +
+											'<p>Launched: ' + (user.created_at).substring(0,10) + '</p>' +
+										'</div>' +
+									'</div>' +
+								'</div>' +
+							'</article>';
+				return userHTML;
+			}
+		}
+
+		function showUsersNotStreaming(user) {
 			for(var i in user){
-				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel">' +
+				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline">' +
 								'<div class="channelPreview">' +
 									'<img class="img" src="'+user[i].profile_banner+'">' +
 								'</div>' +
 									'<div class="channelDescription">' +
-									// tu by można wrzucić jeszcze jedno zawołanie dla celów zdjecia offline
 										'<h3><a href="https://www.twitch.tv/' + user[i].display_name + '">'+ user[i].display_name +'</a></h3>' +
 										'<div class="row">' +
 											'<div class="col-12">' +
@@ -206,7 +216,22 @@ var engine = {
 								'</div>' +
 							'</article>';
 				$('#streamContent').append(userHTML);
-			}
+			}			
+			$('.loading').hide();
+			$('header').show();
+			$('main').show();
+		}
+		function showUnkownUsers(user) {
+			console.log(user);
+			var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-unavailable">' +
+				'<div class="channelPreview">' +
+					'<img class="img" src="css/assets/nostream.gif">' +
+				'</div>' +
+				'<div class="channelDescription">' +
+					'<h3>' + user.message + ' or does not exist</h3>' +
+				'</div>' +
+			'</article>';
+			$('#streamContent').append(userHTML);
 		}
 	}
 };

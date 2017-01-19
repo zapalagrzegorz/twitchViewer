@@ -4,10 +4,12 @@
   "description": "\"# WikipediaViewer\" \r \"# twitchViewer\"",
   "main": "index.html",
   "dependencies": {
-    "jQuery": "3.1.1"
+    "jQuery": "3.1.1",
+    "bootstrap": "4.0.0"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
+    "eslint-plugin-import": "^2.2.0",
     "grunt": "^1.0.1",
     "grunt-browser-sync": "^2.2.0",
     "grunt-contrib-watch": "^1.0.0"

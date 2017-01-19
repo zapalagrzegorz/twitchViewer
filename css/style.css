@@ -2,11 +2,6 @@
 
 .dark-primary-color    { background: #876CE1; }
 
-/*[class^="icon-"], [class*=" icon-"] {
-    display: inline-block;
-    width: 100%;
-}*/
-
 a {
     color: #000;
 }
@@ -24,6 +19,22 @@ header {
 .img {
     width: 100%;
     height: auto;
+}
+.loading {
+    z-index: 100;
+    background-color: #FFF;
+    height: 100vh;
+    width: 100vw;
+}
+.imgCenter {
+    position: absolute;
+    left: calc(50% - 60px);
+    top: calc(50% - 60px);
+    background-color: #FFF;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 100;
 }
 .channelPreview:hover .darken > .img {
     opacity: 0.7;
@@ -46,9 +57,6 @@ header {
     margin: 0;
 }
 
-.user-bio {
-    text-align: justify;
-}
 .icon-play{
     color:#FFF; 
     position: absolute; 
@@ -62,6 +70,12 @@ header {
 p.user-bio {
     margin-bottom: 1rem;
 }  
+p.user-offline-bio {
+    margin-bottom: 2rem;
+}
+.user-bio {
+    text-align: justify;
+}
 
 @media screen and (max-width: 576px) {
     .onlySm {
