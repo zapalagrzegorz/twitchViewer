@@ -4,7 +4,7 @@ var engine = {
 	// currentPage: 0,
 	self: this,
 
-	users: ['polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion', 'freecodecamp', 'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', 'Bananasaurus_Rex'],// array of users and their channels
+	users: ['abc','polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion', 'freecodecamp', 'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', 'Bananasaurus_Rex'],// array of users and their channels
 
 	// app makes request to Twitch API
 	getUsersData: function (event) {
