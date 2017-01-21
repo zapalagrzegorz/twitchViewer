@@ -48,9 +48,11 @@ var engine = {
 					userStreams.push(responses[i][0].stream);
 				}
 			}
+			// show those who stream
 			produceOutput('stream', userStreams);
-			// make AJAX calls if there're any
-			// For users' not streaming do multiple parallel ajax requests
+
+			// make AJAX calls if there're users not streaming
+			// For them do parallel ajax requests
 			if (promises.length !== 0) {
 				$.when.apply($, promises)
 					.done(handleSuccessUsers);
@@ -63,11 +65,13 @@ var engine = {
 			var responses = arguments;
 			for (var i in responses) {
 				if (responses[i][0].hasOwnProperty('error')) {
+					
 					// show uknown users
 					showUnkownUsers(responses[i][0]);
 				}
 				else {
-					// user exists, not streaming 
+
+					// not streaming user exists, 
 					// collect also their channel data - needs another AJAX call
 					var user = {};
 					user.bio = (responses[i][0].bio === null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
@@ -75,17 +79,11 @@ var engine = {
 					user.logo = (responses[i][0].logo === null ? 'css/assets/Glitch.png' : responses[i][0].logo);
 					user.display_name = responses[i][0].display_name;
 					usersData.push(user);
-
 					promisesChannels.push(ajaxRequest('channels', responses[i][0].name));
-					// pobierz dla niego dane z channel
-					// promisesChannels.push(ajaxRequestChannel(responses[i][0].name));
 				}
 			}
-			if (promisesChannels.length !== 0) {
-				getChannelsData(promisesChannels, usersData);
-			}
+			getChannelsData(promisesChannels, usersData);
 		}
-
 
 		// @usersData array
 		function getChannelsData(promises, usersData) {
@@ -101,6 +99,7 @@ var engine = {
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
 						}
 					}
+					// show not streaming users
 					produceOutput('nostreaming', usersData);
 				});
 			$('header').show();
