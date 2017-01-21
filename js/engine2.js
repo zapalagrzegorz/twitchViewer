@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 function showUsersNotStreaming(user) {
 			for(var i in user){
 				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline">' +
@@ -11,12 +24,14 @@ function showUsersNotStreaming(user) {
 												'<p class="user-bio">' + user[i].bio +'</p>' +
 											'</div>' +
 										'</div>' +
+
 										'<div class="row">' +
 											'<div class="col-2" style="padding-right:0;">' +
 												'<a href="https://www.twitch.tv/' + user[i].display_name + '">' +
 													'<img class="img" src="'+ user[i].logo + '">' +
 												'</a>' +
 											'</div>' +
+											
 										'<div class="col-10">' +
 											'<p>last status: ' + user[i].status +'</p>' +
 											'<p>followers: ' + user[i].followers + '</p>' +

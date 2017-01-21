@@ -1,7 +1,7 @@
 
 var engine = {
 	self: this,
-	users: ['Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
+	users: ['soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
 	// app makes request to Twitch API
 	getUsersData: function () {
@@ -102,8 +102,11 @@ var engine = {
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
 						}
 					}
-					// showUsersNotStreaming(usersData);
+					produceOutput('nostreaming', usersData);
 				});
+			$('.loading').hide();
+			$('header').show();
+			$('main').show();
 		}
 
 		/***************************************
@@ -131,74 +134,46 @@ var engine = {
 					followers = user[i].channel.followers;
 					launchedAt = (user[i].created_at).substring(0,10);
 				}
-				else {
-					// 
+				else if (typeOfUser === 'nostreaming') {
+					pic = user[i].profile_banner;
+					mainDesc = user[i].display_name;
+					logo = user[i].logo;
+					followers = user[i].followers;
+					launchedAt = user[i].created_at;
+
+
 				}
 
-				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online">' +
-									'<div class="channelPreview">' +
-										'<img class="img" src="'+ pic +'">' +
-									'</div>' +
-										'<div class="channelDescription">' +
-											'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>' +
-											'<div class="row">' +
-												'<div class="col-10">' +
-													'<h4><a href="https://www.twitch.tv/' + name + '">'+ status +'</a></h4> ' +
-												'</div>' +
-												'<div class="col-2" style="text-align: center">' +
-													'<p><span id="#online">'+ viewers +'</span> online</p>' +
-												'</div>' +
-											'</div>' +
-											'<div class="row">' +
-												'<div class="col-2" style="padding-right:0;">' +
-													'<a href="https://www.twitch.tv/' + mainDesc + '">' +
-														'<img class="img" src="'+ logo + '">' +
-													'</a>' +
-												'</div>' +
-											'<div class="col-10">' +
-												'<p>followers: ' + followers + '</p>' +
-												'<p>Launched: ' + launchedAt + '</p>' +
-											'</div>' +
-										'</div>' +
-									'</div>' +
-								'</article>';
-				// return userHTML;
-				$('#streamContent').append(userHTML);
-			}
-		}
+				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online"><div class="channelPreview">' +
+									'<img class="img" src="'+ pic +'"></div>' +
+								'<div class="channelDescription">' +
+									'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>';
+				
+				if(typeOfUser === 'stream') {
+					userHTML +=	'<div class="row"><div class="col-10">' +
+										'<h4><a href="https://www.twitch.tv/' + name + '">'+ status +'</a></h4></div>' +
+									'<div class="col-2" style="text-align: center">' +
+										'<p><span id="#online">'+ viewers +'</span> online</p></div></div>';
+				}
+				else if(typeOfUser === 'nostreaming'){
+					userHTML += '<div class="row"><div class="col-12">' +
+									'<p class="user-bio">' + user[i].bio +'</p></div></div>';
+				}
 
-		function showUsersNotStreaming(user) {
-			for(var i in user){
-				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline">' +
-								'<div class="channelPreview">' +
-									'<img class="img" src="'+user[i].profile_banner+'">' +
-								'</div>' +
-									'<div class="channelDescription">' +
-										'<h3><a href="https://www.twitch.tv/' + user[i].display_name + '">'+ user[i].display_name +'</a></h3>' +
-										'<div class="row">' +
-											'<div class="col-12">' +
-												'<p class="user-bio">' + user[i].bio +'</p>' +
-											'</div>' +
-										'</div>' +
-										'<div class="row">' +
-											'<div class="col-2" style="padding-right:0;">' +
-												'<a href="https://www.twitch.tv/' + user[i].display_name + '">' +
-													'<img class="img" src="'+ user[i].logo + '">' +
-												'</a>' +
-											'</div>' +
-										'<div class="col-10">' +
-											'<p>last status: ' + user[i].status +'</p>' +
-											'<p>followers: ' + user[i].followers + '</p>' +
-											'<p>Launched: ' + (user[i].created_at).substring(0,10) + '</p>' +
-										'</div>' +
-									'</div>' +
-								'</div>' +
-							'</article>';
+				userHTML += '<div class="row"><div class="col-2" style="padding-right:0;">' +
+								'<a href="https://www.twitch.tv/' + mainDesc + '">' +
+									'<img class="img" src="'+ logo + '"></a></div>' +
+							'<div class="col-10" id="lastStatus' + mainDesc +'">' +
+								'<p>followers: ' + followers + '</p>' +
+								'<p>Launched: ' + launchedAt + '</p>' +
+							'</div></div></div></article>';
 				$('#streamContent').append(userHTML);
-			}			
-			$('.loading').hide();
-			$('header').show();
-			$('main').show();
+				
+				if(typeOfUser === 'nostreaming'){
+					var lastStatus = '<p>Last status: '+ user[i].status + '</p>';
+					$('#lastStatus' + mainDesc).prepend(lastStatus);
+				}
+			}
 		}
 
 		function showUnkownUsers(user) {
