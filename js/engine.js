@@ -8,6 +8,16 @@ var engine = {
 		var self = this;
 		
 		if(single !== undefined && single !== ""){
+			var single = validateSearch(single);
+			var singleLw = single.toLowerCase();
+			self.users.forEach(function(value) {
+				var valueTemp = value.toLowerCase();
+				if(singleLw === valueTemp){
+					$('#'+value).show();
+					$('#searchLoading').hide();
+					return; 
+				}
+			});
 			var promises = [];
 			var promise = ajaxRequest('streams', single);
 			promises.push(promise);
@@ -129,10 +139,11 @@ var engine = {
 					}
 					// show not streaming users
 					produceOutput('nostreaming', usersData);
+					$('header').show();
+					$('main').show();
+					$('#mainLoading').hide();
 				});
-			$('header').show();
-			$('main').show();
-			$('.loading').hide();
+
 		}
 
 		/***************************************
@@ -144,6 +155,7 @@ var engine = {
 			for(var i in user){
 				var pic;
 				var mainDesc;
+				var name;
 				var logo;
 				var followers;
 				var launchedAt;
@@ -151,18 +163,20 @@ var engine = {
 				if(typeOfUser === 'stream'){
 					pic = user[i].preview.large;
 					mainDesc = user[i].game;
+					name = user[i].channel.name;
 					logo = user[i].channel.logo;
 					followers = user[i].channel.followers;
 					launchedAt = (user[i].created_at).substring(0,10);
-					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online"><div class="shadows"><div class="channelPreview">';
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online" id="'+ name+'"><div class="shadows"><div class="channelPreview">';
 				}
 				else if (typeOfUser === 'nostreaming') {
 					pic = user[i].profile_banner;
 					mainDesc = user[i].display_name;
+					name = user[i].name;	
 					logo = user[i].logo;
 					followers = user[i].followers;
 					launchedAt = user[i].created_at;
-					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline"><div class="shadows"><div class="channelPreview">';
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline" id="'+ name+'"><div class="shadows"><div class="channelPreview">';
 				}
 				 
 				userHTML +=	'<img class="img" src="'+ pic +'"></div><div class="channelDescription">' +
@@ -172,7 +186,7 @@ var engine = {
 					userHTML +=	'<div class="row"><div class="col-10">' +
 										'<h4><a href="https://www.twitch.tv/' + user[i].channel.name + '">'+ user[i].channel.status +'</a></h4></div>' +
 									'<div class="col-2" style="text-align: center">' +
-										'<p><span id="#online">'+ user[i].viewers +'</span> online</p></div></div>';
+										'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i><p><span id="#online">'+ user[i].viewers +'</span> online</p></div></div>';
 				}
 				else if(typeOfUser === 'nostreaming'){
 					userHTML += '<div class="row"><div class="col-12">' +
@@ -180,7 +194,7 @@ var engine = {
 				}
 
 				userHTML += '<div class="row"><div class="col-2" style="padding-right:0;">' +
-								'<a href="https://www.twitch.tv/' + mainDesc + '">' +
+								'<a href="https://www.twitch.tv/' + name + '">' +
 									'<img class="img" src="'+ logo + '"></a></div>' +
 							'<div class="col-10" id="lastStatus' + mainDesc +'">' +
 								'<p>followers: ' + followers + '</p>' +
@@ -191,9 +205,9 @@ var engine = {
 				if(typeOfUser === 'nostreaming'){
 					var lastStatus = '<p>Last status: '+ user[i].status + '</p>';
 					$('#lastStatus' + mainDesc).prepend(lastStatus);
-
 				}
 			}
+			$('#searchLoading').hide();
 		}
 
 		function showUnkownUsers(user) {
@@ -207,7 +221,14 @@ var engine = {
 		// 	console.log(jqXHR, error, errorThrown);
 		// 	// $('main').html(<div class="error">Something went wrong</div>);    
 		// }
+		function validateSearch(single) {
+			if(single.indexOf(" ") !== -1){
+				return single.replace(/\s/g, "_")
+			}
+			return single;
+		}
 	}
+
 	// getRequestedUser: function(search){
  	// 	$.ajax({
 	// 		type: 'get',
