@@ -133,6 +133,9 @@ header {
     margin-right: auto;
     z-index: 100;
 }
+.shadows {
+    box-shadow: 0 6px 9px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
 .channelPreview:hover .darken > .img {
     opacity: 0.7;
 }

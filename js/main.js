@@ -1,17 +1,18 @@
 $().ready(function () {
-	// $('#wiki-search-button').click($.proxy(engine.getData, engine));
-  // $('#wiki-search-random').click($.proxy(engine.getRandomData, engine))
-  	// $('body').prepend('<div class="loading"><img class="imgCenter" src="css/assets/loading.gif"></div>');
-	// $('header').hide();
-	// $('main').hide();
+
+	$('header').hide();
+	$('main').hide();
 	
-  // $(document).bind('keypress',pressed);
-	$('#all').click(function(e){
+	$('.nav-item').click(function(e){
 		$('.navbar li.active').removeClass('active');
 		var $this = $(this);
 		if (!$this.hasClass('active')) {
 			$this.addClass('active');
 		}
+		e.preventDefault();
+	})
+
+	$('#all').click(function(e){
 		e.preventDefault();
 		$('.user-online').show();
 		$('.user-offline').show();
@@ -19,11 +20,6 @@ $().ready(function () {
 	});
 	
 	$('#online').click(function(e){
-		$('.navbar li.active').removeClass('active');
-		var $this = $(this);
-		if (!$this.hasClass('active')) {
-			$this.addClass('active');
-		}
 		e.preventDefault();
 		$('.user-offline').hide();
 		$('.user-unavailable').hide();
@@ -32,11 +28,6 @@ $().ready(function () {
 	});
 
 	$('#offline').click(function(e){
-		$('.navbar li.active').removeClass('active');
-		var $this = $(this);
-		if (!$this.hasClass('active')) {
-			$this.addClass('active');
-		}
 		e.preventDefault();
 		$('.user-online').hide();
 		$('.user-unavailable').hide();
@@ -44,11 +35,3 @@ $().ready(function () {
 	});
 	engine.getUsersData();
 });
-
-// function pressed(e)
-// {
-// 	if(e.keyCode === 13)
-//   {
-// 		engine.getUsersData();
-// 	}
-// }

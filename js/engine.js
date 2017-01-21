@@ -69,7 +69,6 @@ var engine = {
 				else {
 					// user exists, not streaming 
 					// collect also their channel data - needs another AJAX call
-					console.log(responses[i][0]);
 					var user = {};
 					user.bio = (responses[i][0].bio === null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
 					user.created_at = responses[i][0].created_at;
@@ -104,9 +103,9 @@ var engine = {
 					}
 					produceOutput('nostreaming', usersData);
 				});
-			$('.loading').hide();
 			$('header').show();
 			$('main').show();
+			$('.loading').hide();
 		}
 
 		/***************************************
@@ -118,21 +117,17 @@ var engine = {
 			for(var i in user){
 				var pic;
 				var mainDesc;
-				var name;
-				var status;
-				var viewers;
 				var logo;
 				var followers;
 				var launchedAt;
+				var userHTML;
 				if(typeOfUser === 'stream'){
 					pic = user[i].preview.large;
 					mainDesc = user[i].game;
-					name = user[i].channel.name;
-					status = user[i].channel.status;
-					viewers = user[i].viewers;
 					logo = user[i].channel.logo;
 					followers = user[i].channel.followers;
 					launchedAt = (user[i].created_at).substring(0,10);
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online"><div class="shadows"><div class="channelPreview">';
 				}
 				else if (typeOfUser === 'nostreaming') {
 					pic = user[i].profile_banner;
@@ -140,20 +135,17 @@ var engine = {
 					logo = user[i].logo;
 					followers = user[i].followers;
 					launchedAt = user[i].created_at;
-
-
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline"><div class="shadows"><div class="channelPreview">';
 				}
-
-				var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online"><div class="channelPreview">' +
-									'<img class="img" src="'+ pic +'"></div>' +
-								'<div class="channelDescription">' +
+				 
+				userHTML +=	'<img class="img" src="'+ pic +'"></div><div class="channelDescription">' +
 									'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>';
 				
 				if(typeOfUser === 'stream') {
 					userHTML +=	'<div class="row"><div class="col-10">' +
-										'<h4><a href="https://www.twitch.tv/' + name + '">'+ status +'</a></h4></div>' +
+										'<h4><a href="https://www.twitch.tv/' + user[i].channel.name + '">'+ user[i].channel.status +'</a></h4></div>' +
 									'<div class="col-2" style="text-align: center">' +
-										'<p><span id="#online">'+ viewers +'</span> online</p></div></div>';
+										'<p><span id="#online">'+ user[i].viewers +'</span> online</p></div></div>';
 				}
 				else if(typeOfUser === 'nostreaming'){
 					userHTML += '<div class="row"><div class="col-12">' +
@@ -166,26 +158,22 @@ var engine = {
 							'<div class="col-10" id="lastStatus' + mainDesc +'">' +
 								'<p>followers: ' + followers + '</p>' +
 								'<p>Launched: ' + launchedAt + '</p>' +
-							'</div></div></div></article>';
+							'</div></div></div></div></article>';
 				$('#streamContent').append(userHTML);
 				
 				if(typeOfUser === 'nostreaming'){
 					var lastStatus = '<p>Last status: '+ user[i].status + '</p>';
 					$('#lastStatus' + mainDesc).prepend(lastStatus);
+
 				}
 			}
 		}
 
 		function showUnkownUsers(user) {
-			console.log(user);
-			var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-unavailable">' +
-				'<div class="channelPreview">' +
-					'<img class="img" src="css/assets/nostream.gif">' +
-				'</div>' +
+			var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-unavailable"><div class="shadows"><div class="channelPreview">' +
+					'<img class="img" src="css/assets/nostream.gif"></div>' +
 				'<div class="channelDescription">' +
-					'<h3>' + user.message + ' or does not exist</h3>' +
-				'</div>' +
-			'</article>';
+					'<h3>' + user.message + ' or does not exist</h3></div></div></article>';
 			$('#streamContent').append(userHTML);
 		}
 		// function handleError(jqXHR, error, errorThrown) {
