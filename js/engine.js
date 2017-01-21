@@ -1,13 +1,22 @@
 
 var engine = {
 	self: this,
-	users: ['soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
+	users: ['bobross', 'sandexperiment', 'timsww', 'soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
 	// app makes request to Twitch API
-	getUsersData: function () {
+	getUsersData: function (single) {
 		var self = this;
-
-		getStreamsData();
+		
+		if(single !== undefined && single !== ""){
+			var promises = [];
+			var promise = ajaxRequest('streams', single);
+			promises.push(promise);
+			$.when.apply($, promises)
+				.done(handleSuccessStreams);
+		}
+		else{
+			getStreamsData();
+		}
 
 		//handle multiple parallel ajax requests
 		function getStreamsData() {
@@ -38,8 +47,19 @@ var engine = {
 			var responses = arguments;
 			var promises = [];
 			var userStreams = [];
+			var singleQ = false;
+			if(responses.length === 3){
+				responses = [];
+				responses.push(arguments);
+				singleQ = true;
+			}
 			for (var i in responses) {
-				if (responses[i][0].stream === null) {
+				if (responses[i][0].stream === null && singleQ === true) {
+					
+					// queue calls for all users which are not streaming
+					promises.push(ajaxRequest('users', single));
+				}
+				else if(responses[i][0].stream === null) {
 					
 					// queue calls for all users which are not streaming
 					promises.push(ajaxRequest('users', self.users[i]));
@@ -63,6 +83,10 @@ var engine = {
 			var usersData = [];
 			var promisesChannels = [];
 			var responses = arguments;
+			if(responses.length === 3){
+				responses = [];
+				responses.push(arguments);
+			}
 			for (var i in responses) {
 				if (responses[i][0].hasOwnProperty('error')) {
 					
@@ -91,6 +115,10 @@ var engine = {
 				// how to pass array "usersData' to as parameter to .done?
 				.done(function () {
 					var responses = arguments;
+					if(responses.length === 3){
+						responses = [];
+						responses.push(arguments);
+					}
 					for (var i in responses) {
 						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner);
 						usersData[i].followers = responses[i][0].followers;
@@ -180,4 +208,17 @@ var engine = {
 		// 	// $('main').html(<div class="error">Something went wrong</div>);    
 		// }
 	}
-};
+	// getRequestedUser: function(search){
+ 	// 	$.ajax({
+	// 		type: 'get',
+	// 		url: 'https://wind-bow.gomix.me/twitch-api/' + call + '/' + user,
+	// 		headers: {
+	// 			Accept: 'application/vnd.twitchtv.v3+json'
+	// 		},
+	// 		success: this.
+
+	// 		}
+	// 	});
+		// }
+	// }
+}
