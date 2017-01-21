@@ -4,13 +4,10 @@ var engine = {
 	// currentPage: 0,
 	self: this,
 
-	users: ['abc','polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion', 'freecodecamp', 'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', 'Bananasaurus_Rex'],// array of users and their channels
+	users: ['Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'OgamingSC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
 	// app makes request to Twitch API
 	getUsersData: function (event) {
-		$('header').hide();
-		$('main').hide();
-		$('body').prepend('<div class="loading"><img class="imgCenter" src="css/assets/loading.gif"></div>');
 		var self = this;
 
 		// pick value from input form
