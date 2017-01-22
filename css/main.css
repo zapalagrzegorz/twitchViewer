@@ -99,6 +99,31 @@ textarea {
 
 .dark-primary-color    { background: #876CE1; }
 
+body {
+  /*background-image:url(//strictquirks.nl/graphics/checker.png);*/
+  background-attachment: fixed;
+}
+
+body:after{
+  content: "";
+  display: block;
+  background-attachment: fixed;
+  position: fixed;
+  top:0; left:0;
+  height: 100%;
+  width: 100%;
+     /*background-image: url(http://www.transparenttextures.com/patterns/crisp-paper-ruffles.png);*/
+  background: #212121; /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(circle, #212121, #000);; /* Safari */
+  background: -o-radial-gradient(circle, #212121, #000); /* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(circle, #212121, #000);  /* Firefox 3.6 to 15 */
+  background: radial-gradient(circle, rgba(54, 43, 90, 0.6), #0d0a16); /* Standard syntax */
+  z-index:-1;   
+}
+
+header, main {
+    display: none;
+}
 a {
     color: #000;
 }
@@ -106,6 +131,15 @@ a:hover {
     text-decoration: none;
     color: #876CE1;
     transition: color 0.2s;
+}
+.btn-outline-success {
+    color: #876CE1;
+    border-color: #876CE1;
+}
+.btn-outline-success:hover {
+    color: #FFF;
+    background-color: #876CE1;
+    border-color: #876CE1;
 }
 .fa {
     z-index: 1;
@@ -135,6 +169,11 @@ header {
 }
 .shadows {
     box-shadow: 0 6px 9px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+.shadows-navbar {
+    -webkit-box-shadow: 0 0px 8px 1px #111;
+    -moz-box-shadow: 0 0px 8px 1px #111;
+    box-shadow: 0 0px 8px 1px #111;
 }
 .channelPreview:hover .darken > .img {
     opacity: 0.7;

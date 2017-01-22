@@ -5,8 +5,6 @@ $().ready(function () {
 	engine.getUsersData();
 
 	function init() {
-		$('header').hide();
-		$('main').hide();
 		$('#searchLoading').hide();
 
 		$('.nav-item').click(function (e) {
