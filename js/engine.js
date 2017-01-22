@@ -1,13 +1,29 @@
-
-var engine = {
+// app makes three request to Twitch APIs
+// I couldn't divided function call getUsersData into seperate properties as they're not independent.
+// First it checks if users is streaming '/streams'. If responded positively, data is enough for that user, and produces output.
+// If not, it makes call to /users/. If there isn't such user it's enough to produce adequate output.
+// If users exists it makes call to corresponding /channel/ to get further data.
+// Reponse data is transferred to next call (/streams/ -> /users/ -> /channel/ provided it gets the result
+// so that it produces output only when a call is finished for that user. 
+ 
+const engine = {
 	self: this,
 	users: ['bobross', 'sandexperiment', 'timsww', 'soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
-	// app makes request to Twitch API
+	// app makes three request to Twitch API
 	getUsersData: function (single) {
 		var self = this;
 		
+		// conditions made for search option 
+		// It was built later, so tried to put it into existing function
 		if(single !== undefined && single !== ""){
+			getSearchData(single);
+		}
+		else{
+			getStreamsData();
+		}
+
+		function getSearchData(single){
 			var single = validateSearch(single);
 			var singleLw = single.toLowerCase();
 			self.users.forEach(function(value) {
@@ -18,29 +34,30 @@ var engine = {
 					return; 
 				}
 			});
+			// functions were made with array parameter for the initial users array
+			// not to redefine them, put single search value into array
 			var promises = [];
 			var promise = ajaxRequest('streams', single);
 			promises.push(promise);
+			
+			// .when method executes once all of calls have finished
+			// .apply method enables array where singular arguments expected
+			// first argument '$' is made to use 'apply' 
 			$.when.apply($, promises)
 				.done(handleSuccessStreams);
 		}
-		else{
-			getStreamsData();
-		}
 
-		//handle multiple parallel ajax requests
+		// Handle multiple parallel ajax requests
 		function getStreamsData() {
 			var promises = [];
 			for (var i = 0, l = self.users.length; i < l; i++) {
 				var promise = ajaxRequest('streams', self.users[i]);
 				promises.push(promise);
 			}
-			// when deals when all of calls have finished
-			// apply enables array where singular arguments neededs
-			// first argument is as it is, for 'apply' reasons
 			$.when.apply($, promises)
 				.done(handleSuccessStreams);
 		}
+	
 		
 		// create single ajax requests for each user
 		function ajaxRequest(call, user) {
@@ -66,7 +83,7 @@ var engine = {
 			for (var i in responses) {
 				if (responses[i][0].stream === null && singleQ === true) {
 					
-					// queue calls for all users which are not streaming
+					// queue calls for searched user which is not streaming
 					promises.push(ajaxRequest('users', single));
 				}
 				else if(responses[i][0].stream === null) {
@@ -75,6 +92,7 @@ var engine = {
 					promises.push(ajaxRequest('users', self.users[i]));
 				}
 				else {
+					// users is streaming
 					userStreams.push(responses[i][0].stream);
 				}
 			}
@@ -105,8 +123,9 @@ var engine = {
 				}
 				else {
 
-					// not streaming user exists, 
-					// collect also their channel data - needs another AJAX call
+					// Not streaming user exists, collect some of their data from /users/ and
+					// postpone showing output until channel data will be received
+					// Needs another AJAX call
 					var user = {};
 					user.bio = (responses[i][0].bio === null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
 					user.created_at = responses[i][0].created_at;
@@ -116,6 +135,8 @@ var engine = {
 					promisesChannels.push(ajaxRequest('channels', responses[i][0].name));
 				}
 			}
+			// only when channel data will be received, user output might be made
+			// so usersData is collected and passed forward
 			getChannelsData(promisesChannels, usersData);
 		}
 
@@ -123,6 +144,7 @@ var engine = {
 		function getChannelsData(promises, usersData) {
 			$.when.apply($, promises)
 				// how to pass array "usersData' to as parameter to .done?
+				// don't know so, made local function 
 				.done(function () {
 					var responses = arguments;
 					if(responses.length === 3){
@@ -160,6 +182,7 @@ var engine = {
 				var followers;
 				var launchedAt;
 				var userHTML;
+				
 				if(typeOfUser === 'stream'){
 					pic = user[i].preview.large;
 					mainDesc = user[i].game;
@@ -167,7 +190,8 @@ var engine = {
 					logo = user[i].channel.logo;
 					followers = user[i].channel.followers;
 					launchedAt = (user[i].created_at).substring(0,10);
-					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online" id="'+ name+'"><div class="shadows"><div class="channelPreview">';
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online" id="'+ name+'"><div class="shadows"><div class="channelPreview"><a href="https://www.twitch.tv/' + name + '" target="_blank"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i></a><div class="darken">';
+								
 				}
 				else if (typeOfUser === 'nostreaming') {
 					pic = user[i].profile_banner;
@@ -176,10 +200,10 @@ var engine = {
 					logo = user[i].logo;
 					followers = user[i].followers;
 					launchedAt = user[i].created_at;
-					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline" id="'+ name+'"><div class="shadows"><div class="channelPreview">';
+					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-offline" id="'+ name+'"><div class="shadows"><div class="channelPreview"><div>'; // extra div for darken
 				}
-				 
-				userHTML +=	'<img class="img" src="'+ pic +'"></div><div class="channelDescription">' +
+				//  end of darken
+				userHTML +=	'<img class="img" src="'+ pic +'"></div></div><div class="channelDescription">' +
 									'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>';
 				
 				if(typeOfUser === 'stream') {
@@ -228,18 +252,4 @@ var engine = {
 			return single;
 		}
 	}
-
-	// getRequestedUser: function(search){
- 	// 	$.ajax({
-	// 		type: 'get',
-	// 		url: 'https://wind-bow.gomix.me/twitch-api/' + call + '/' + user,
-	// 		headers: {
-	// 			Accept: 'application/vnd.twitchtv.v3+json'
-	// 		},
-	// 		success: this.
-
-	// 		}
-	// 	});
-		// }
-	// }
 }
