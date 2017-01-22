@@ -46,12 +46,8 @@ $().ready(function () {
 		});
 
 		function executeSearch() {
-			$('#searchLoading').show();
 			var searchValue = $("#searchValue").val();
 			engine.getUsersData(searchValue);
-			$('.user-online').hide();
-			$('.user-offline').hide();
-			$('.user-unavailable').hide();
 		}
 
 		function pressed(e) {

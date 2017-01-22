@@ -100,7 +100,6 @@ textarea {
 .dark-primary-color    { background: #876CE1; }
 
 body {
-  /*background-image:url(//strictquirks.nl/graphics/checker.png);*/
   background-attachment: fixed;
 }
 
@@ -112,7 +111,6 @@ body:after{
   top:0; left:0;
   height: 100%;
   width: 100%;
-     /*background-image: url(http://www.transparenttextures.com/patterns/crisp-paper-ruffles.png);*/
   background: #212121; /* For browsers that do not support gradients */
   background: -webkit-radial-gradient(circle, #212121, #000);; /* Safari */
   background: -o-radial-gradient(circle, #212121, #000); /* Opera 11.6 to 12.0 */
@@ -136,10 +134,14 @@ a:hover {
     color: #876CE1;
     border-color: #876CE1;
 }
-.btn-outline-success:hover {
+.btn-outline-success:hover, .btn-outline-success:active {
     color: #FFF;
     background-color: #876CE1;
     border-color: #876CE1;
+}
+.btn-outline-success:focus {
+    -webkit-box-shadow: 0 0 0 2px rgba(135,108,225,.5);
+    box-shadow: 0 0 0 2px rgba(135,108,225,.5);
 }
 .fa {
     z-index: 1;

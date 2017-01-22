@@ -13,22 +13,38 @@ const engine = {
 	// app makes three request to Twitch API
 	getUsersData: function (single) {
 		var self = this;
-		
 		// conditions made for search option 
 		// It was built later, so tried to put it into existing function
-		if(single !== undefined && single !== ""){
+
+		if(single === "" || invalidEntry(single)){
+			return;
+		}
+		else if(typeof(single) == "string"){
 			getSearchData(single);
 		}
 		else{
 			getStreamsData();
 		}
-
+		function invalidEntry() {
+			if(typeof(single) == "string"){
+				// tests search entry for API requirements
+				if(!/^[a-zA-Z0-9\s][a-zA-Z0-9_\s]*$/.test(single)){
+					$("#searchValue").val("");
+					$("#searchValue").attr("placeholder", "Invalid query");
+					return true;
+				}
+			}
+		}
 		function getSearchData(single){
-			var single = validateSearch(single);
+			$('.user-online').hide();
+			$('.user-offline').hide();
+			$('.user-unavailable').hide();
+			$('#searchLoading').show();
+			single = validateSearchEntry(single);
 			var singleLw = single.toLowerCase();
 			self.users.forEach(function(value) {
 				var valueTemp = value.toLowerCase();
-				if(singleLw === valueTemp){
+				if(singleLw == valueTemp){
 					$('#'+value).show();
 					$('#searchLoading').hide();
 					return; 
@@ -44,7 +60,7 @@ const engine = {
 			// .apply method enables array where singular arguments expected
 			// first argument '$' is made to use 'apply' 
 			$.when.apply($, promises)
-				.done(handleSuccessStreams);
+				.done(handleStreamResponses);
 		}
 
 		// Handle multiple parallel ajax requests
@@ -55,7 +71,7 @@ const engine = {
 				promises.push(promise);
 			}
 			$.when.apply($, promises)
-				.done(handleSuccessStreams);
+				.done(handleStreamResponses);
 		}
 	
 		
@@ -70,23 +86,24 @@ const engine = {
 			});
 		}
 
-		function handleSuccessStreams() {
+		function handleStreamResponses() {
 			var responses = arguments;
 			var promises = [];
 			var userStreams = [];
 			var singleQ = false;
-			if(responses.length === 3){
+			if(responses.length == 3){
 				responses = [];
 				responses.push(arguments);
 				singleQ = true;
+				single = validateSearchEntry(single);
 			}
 			for (var i in responses) {
-				if (responses[i][0].stream === null && singleQ === true) {
+				if (responses[i][0].stream == null && singleQ === true) {
 					
 					// queue calls for searched user which is not streaming
 					promises.push(ajaxRequest('users', single));
 				}
-				else if(responses[i][0].stream === null) {
+				else if(responses[i][0].stream == null) {
 					
 					// queue calls for all users which are not streaming
 					promises.push(ajaxRequest('users', self.users[i]));
@@ -101,7 +118,7 @@ const engine = {
 
 			// make AJAX calls if there're users not streaming
 			// For them do parallel ajax requests
-			if (promises.length !== 0) {
+			if (promises.length != 0) {
 				$.when.apply($, promises)
 					.done(handleSuccessUsers);
 			}
@@ -111,7 +128,7 @@ const engine = {
 			var usersData = [];
 			var promisesChannels = [];
 			var responses = arguments;
-			if(responses.length === 3){
+			if(responses.length == 3){
 				responses = [];
 				responses.push(arguments);
 			}
@@ -127,9 +144,9 @@ const engine = {
 					// postpone showing output until channel data will be received
 					// Needs another AJAX call
 					var user = {};
-					user.bio = (responses[i][0].bio === null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
+					user.bio = (responses[i][0].bio == null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
 					user.created_at = responses[i][0].created_at;
-					user.logo = (responses[i][0].logo === null ? 'css/assets/Glitch.png' : responses[i][0].logo);
+					user.logo = (responses[i][0].logo == null ? 'css/assets/Glitch.png' : responses[i][0].logo);
 					user.display_name = responses[i][0].display_name;
 					usersData.push(user);
 					promisesChannels.push(ajaxRequest('channels', responses[i][0].name));
@@ -147,14 +164,14 @@ const engine = {
 				// don't know so, made local function 
 				.done(function () {
 					var responses = arguments;
-					if(responses.length === 3){
+					if(responses.length == 3){
 						responses = [];
 						responses.push(arguments);
 					}
 					for (var i in responses) {
-						usersData[i].profile_banner = (responses[i][0].video_banner === null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner);
+						usersData[i].profile_banner = (responses[i][0].video_banner == null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner);
 						usersData[i].followers = responses[i][0].followers;
-						usersData[i].status = (responses[i][0].status === null ? 'no status' : responses[i][0].status);
+						usersData[i].status = (responses[i][0].status == null ? 'no status' : responses[i][0].status);
 						if(usersData[i].status.length > 44){
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
 						}
@@ -183,7 +200,7 @@ const engine = {
 				var launchedAt;
 				var userHTML;
 				
-				if(typeOfUser === 'stream'){
+				if(typeOfUser == 'stream'){
 					pic = user[i].preview.large;
 					mainDesc = user[i].game;
 					name = user[i].channel.name;
@@ -193,7 +210,7 @@ const engine = {
 					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online" id="'+ name+'"><div class="shadows"><div class="channelPreview"><a href="https://www.twitch.tv/' + name + '" target="_blank"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i></a><div class="darken">';
 								
 				}
-				else if (typeOfUser === 'nostreaming') {
+				else if (typeOfUser == 'nostreaming') {
 					pic = user[i].profile_banner;
 					mainDesc = user[i].display_name;
 					name = user[i].name;	
@@ -206,13 +223,13 @@ const engine = {
 				userHTML +=	'<img class="img" src="'+ pic +'"></div></div><div class="channelDescription">' +
 									'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>';
 				
-				if(typeOfUser === 'stream') {
+				if(typeOfUser == 'stream') {
 					userHTML +=	'<div class="row"><div class="col-10">' +
 										'<h4><a href="https://www.twitch.tv/' + user[i].channel.name + '">'+ user[i].channel.status +'</a></h4></div>' +
 									'<div class="col-2" style="text-align: center">' +
 										'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i><p><span id="#online">'+ user[i].viewers +'</span> online</p></div></div>';
 				}
-				else if(typeOfUser === 'nostreaming'){
+				else if(typeOfUser == 'nostreaming'){
 					userHTML += '<div class="row"><div class="col-12">' +
 									'<p class="user-bio">' + user[i].bio +'</p></div></div>';
 				}
@@ -226,7 +243,7 @@ const engine = {
 							'</div></div></div></div></article>';
 				$('#streamContent').append(userHTML);
 				
-				if(typeOfUser === 'nostreaming'){
+				if(typeOfUser == 'nostreaming'){
 					var lastStatus = '<p>Last status: '+ user[i].status + '</p>';
 					$('#lastStatus' + mainDesc).prepend(lastStatus);
 				}
@@ -245,11 +262,13 @@ const engine = {
 		// 	console.log(jqXHR, error, errorThrown);
 		// 	// $('main').html(<div class="error">Something went wrong</div>);    
 		// }
-		function validateSearch(single) {
-			if(single.indexOf(" ") !== -1){
-				return single.replace(/\s/g, "_")
+		function validateSearchEntry(single) {
+			if(single.indexOf(" ") != -1){
+				return single.replace(/\s/g, "_");
 			}
-			return single;
+			else {
+				return single;
+			}
 		}
 	}
 }
