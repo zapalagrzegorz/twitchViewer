@@ -5,9 +5,10 @@
 // If users exists it makes call to corresponding /channel/ to get further data.
 // Reponse data is transferred to next call (/streams/ -> /users/ -> /channel/ provided it gets the result
 // so that it produces output only when a call is finished for that user. 
- 
+
+"use strict";
+
 const engine = {
-	self: this,
 	users: ['bobross', 'sandexperiment', 'timsww', 'soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
 	// app makes three request to Twitch API
@@ -16,6 +17,7 @@ const engine = {
 		// conditions made for search option 
 		// It was built later, so tried to put it into existing function
 
+		/// === is reserved for: "", [] and 0, see YDKJS I
 		if(single === "" || invalidEntry(single)){
 			return;
 		}
@@ -25,9 +27,11 @@ const engine = {
 		else{
 			getStreamsData();
 		}
+
+		// tests users input for valid user entry			
 		function invalidEntry() {
 			if(typeof(single) == "string"){
-				// tests search entry for API requirements
+				// ^ begins with, * zero or more occurence, $ ends with, \s whitespace
 				if(!/^[a-zA-Z0-9\s][a-zA-Z0-9_\s]*$/.test(single)){
 					$("#searchValue").val("");
 					$("#searchValue").attr("placeholder", "Invalid query");
@@ -35,6 +39,7 @@ const engine = {
 				}
 			}
 		}
+
 		function getSearchData(single){
 			$('.user-online').hide();
 			$('.user-offline').hide();
@@ -50,6 +55,7 @@ const engine = {
 					return; 
 				}
 			});
+
 			// functions were made with array parameter for the initial users array
 			// not to redefine them, put single search value into array
 			var promises = [];
@@ -66,8 +72,8 @@ const engine = {
 		// Handle multiple parallel ajax requests
 		function getStreamsData() {
 			var promises = [];
-			for (var i = 0, l = self.users.length; i < l; i++) {
-				var promise = ajaxRequest('streams', self.users[i]);
+			for (let i = 0, l = self.users.length; i < l; i++) {
+				let promise = ajaxRequest('streams', self.users[i]);
 				promises.push(promise);
 			}
 			$.when.apply($, promises)
@@ -95,6 +101,8 @@ const engine = {
 				responses = [];
 				responses.push(arguments);
 				singleQ = true;
+
+				// need to call function again as single value is not changed
 				single = validateSearchEntry(single);
 			}
 			for (var i in responses) {
@@ -114,7 +122,7 @@ const engine = {
 				}
 			}
 			// show those who stream
-			produceOutput('stream', userStreams);
+			produceOutput('streaming', userStreams);
 
 			// make AJAX calls if there're users not streaming
 			// For them do parallel ajax requests
@@ -160,6 +168,7 @@ const engine = {
 		// @usersData array
 		function getChannelsData(promises, usersData) {
 			$.when.apply($, promises)
+
 				// how to pass array "usersData' to as parameter to .done?
 				// don't know so, made local function 
 				.done(function () {
@@ -176,6 +185,7 @@ const engine = {
 							usersData[i].status = responses[i][0].status.substring(0,44).concat('...');
 						}
 					}
+
 					// show not streaming users
 					produceOutput('nostreaming', usersData);
 					$('header').show();
@@ -200,7 +210,7 @@ const engine = {
 				var launchedAt;
 				var userHTML;
 				
-				if(typeOfUser == 'stream'){
+				if(typeOfUser == 'streaming'){
 					pic = user[i].preview.large;
 					mainDesc = user[i].game;
 					name = user[i].channel.name;
@@ -208,7 +218,6 @@ const engine = {
 					followers = user[i].channel.followers;
 					launchedAt = (user[i].created_at).substring(0,10);
 					userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-online" id="'+ name+'"><div class="shadows"><div class="channelPreview"><a href="https://www.twitch.tv/' + name + '" target="_blank"><i class="fa fa-3x fa-play icon-play" aria-hidden="true"></i></a><div class="darken">';
-								
 				}
 				else if (typeOfUser == 'nostreaming') {
 					pic = user[i].profile_banner;
@@ -221,11 +230,11 @@ const engine = {
 				}
 				//  end of darken
 				userHTML +=	'<img class="img" src="'+ pic +'"></div></div><div class="channelDescription">' +
-									'<h3><a href="https://www.twitch.tv/' + mainDesc + '">'+ mainDesc +'</a></h3>';
+									'<h3><a href="https://www.twitch.tv/' + mainDesc + '" target="_blank">'+ mainDesc +'</a></h3>';
 				
-				if(typeOfUser == 'stream') {
+				if(typeOfUser == 'streaming') {
 					userHTML +=	'<div class="row"><div class="col-10">' +
-										'<h4><a href="https://www.twitch.tv/' + user[i].channel.name + '">'+ user[i].channel.status +'</a></h4></div>' +
+										'<h4><a href="https://www.twitch.tv/' + user[i].channel.name + '" target="_blank">'+ user[i].channel.status +'</a></h4></div>' +
 									'<div class="col-2" style="text-align: center">' +
 										'<i class="fa fa-2x fa-user-circle" aria-hidden="true"></i><p><span id="#online">'+ user[i].viewers +'</span> online</p></div></div>';
 				}
@@ -235,12 +244,13 @@ const engine = {
 				}
 
 				userHTML += '<div class="row"><div class="col-2" style="padding-right:0;">' +
-								'<a href="https://www.twitch.tv/' + name + '">' +
+								'<a href="https://www.twitch.tv/' + name + '" target="_blank">' +
 									'<img class="img" src="'+ logo + '"></a></div>' +
 							'<div class="col-10" id="lastStatus' + mainDesc +'">' +
 								'<p>followers: ' + followers + '</p>' +
 								'<p>Launched: ' + launchedAt + '</p>' +
 							'</div></div></div></div></article>';
+
 				$('#streamContent').append(userHTML);
 				
 				if(typeOfUser == 'nostreaming'){
