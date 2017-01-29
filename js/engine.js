@@ -13,11 +13,11 @@ const engine = {
 
 	// app makes three request to Twitch API
 	getUsersData: function (single) {
-		var self = this;
+		let self = this;
+
 		// conditions made for search option 
 		// It was built later, so tried to put it into existing function
-
-		/// === is reserved for: "", [] and 0, see YDKJS I
+		// === is reserved for: "", [] and 0, see YDKJS I
 		if(single === "" || invalidEntry(single)){
 			return;
 		}
@@ -27,6 +27,12 @@ const engine = {
 		else{
 			getStreamsData();
 		}
+
+
+		/******************************************** 
+		 * Helper functions to execute calls to API and produce output
+		 *  
+		 * ********************************************/
 
 		// tests users input for valid user entry			
 		function invalidEntry() {
@@ -46,9 +52,9 @@ const engine = {
 			$('.user-unavailable').hide();
 			$('#searchLoading').show();
 			single = validateSearchEntry(single);
-			var singleLw = single.toLowerCase();
+			let singleLw = single.toLowerCase();
 			self.users.forEach(function(value) {
-				var valueTemp = value.toLowerCase();
+				let valueTemp = value.toLowerCase();
 				if(singleLw == valueTemp){
 					$('#'+value).show();
 					$('#searchLoading').hide();
@@ -58,8 +64,8 @@ const engine = {
 
 			// functions were made with array parameter for the initial users array
 			// not to redefine them, put single search value into array
-			var promises = [];
-			var promise = ajaxRequest('streams', single);
+			let promises = [];
+			let promise = ajaxRequest('streams', single);
 			promises.push(promise);
 			
 			// .when method executes once all of calls have finished
@@ -71,7 +77,7 @@ const engine = {
 
 		// Handle multiple parallel ajax requests
 		function getStreamsData() {
-			var promises = [];
+			let promises = [];
 			for (let i = 0, l = self.users.length; i < l; i++) {
 				let promise = ajaxRequest('streams', self.users[i]);
 				promises.push(promise);
@@ -93,10 +99,7 @@ const engine = {
 		}
 
 		function handleStreamResponses() {
-			var responses = arguments;
-			var promises = [];
-			var userStreams = [];
-			var singleQ = false;
+			let responses = arguments, promises = [], userStreams = [], singleQ = false;
 			if(responses.length == 3){
 				responses = [];
 				responses.push(arguments);
@@ -105,7 +108,7 @@ const engine = {
 				// need to call function again as single value is not changed
 				single = validateSearchEntry(single);
 			}
-			for (var i in responses) {
+			for (let i in responses) {
 				if (responses[i][0].stream == null && singleQ === true) {
 					
 					// queue calls for searched user which is not streaming
@@ -133,14 +136,12 @@ const engine = {
 		}
 
 		function handleSuccessUsers() {
-			var usersData = [];
-			var promisesChannels = [];
-			var responses = arguments;
+			let usersData = [], promisesChannels = [], responses = arguments;
 			if(responses.length == 3){
 				responses = [];
 				responses.push(arguments);
 			}
-			for (var i in responses) {
+			for (let i in responses) {
 				if (responses[i][0].hasOwnProperty('error')) {
 					
 					// show uknown users
@@ -151,7 +152,7 @@ const engine = {
 					// Not streaming user exists, collect some of their data from /users/ and
 					// postpone showing output until channel data will be received
 					// Needs another AJAX call
-					var user = {};
+					let user = {};
 					user.bio = (responses[i][0].bio == null ? 'No bio available' : responses[i][0].bio.substring(0,140).concat('...'));
 					user.created_at = responses[i][0].created_at;
 					user.logo = (responses[i][0].logo == null ? 'css/assets/Glitch.png' : responses[i][0].logo);
@@ -160,6 +161,7 @@ const engine = {
 					promisesChannels.push(ajaxRequest('channels', responses[i][0].name));
 				}
 			}
+			
 			// only when channel data will be received, user output might be made
 			// so usersData is collected and passed forward
 			getChannelsData(promisesChannels, usersData);
@@ -172,12 +174,12 @@ const engine = {
 				// how to pass array "usersData' to as parameter to .done?
 				// don't know so, made local function 
 				.done(function () {
-					var responses = arguments;
+					let responses = arguments;
 					if(responses.length == 3){
 						responses = [];
 						responses.push(arguments);
 					}
-					for (var i in responses) {
+					for (let i in responses) {
 						usersData[i].profile_banner = (responses[i][0].video_banner == null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner);
 						usersData[i].followers = responses[i][0].followers;
 						usersData[i].status = (responses[i][0].status == null ? 'no status' : responses[i][0].status);
@@ -201,14 +203,8 @@ const engine = {
 		* *****************************************************/
 
 		function produceOutput(typeOfUser, user) {
-			for(var i in user){
-				var pic;
-				var mainDesc;
-				var name;
-				var logo;
-				var followers;
-				var launchedAt;
-				var userHTML;
+			for(let i in user){
+				let pic, mainDesc, name, logo, followers, launchedAt, userHTML;
 				
 				if(typeOfUser == 'streaming'){
 					pic = user[i].preview.large;
