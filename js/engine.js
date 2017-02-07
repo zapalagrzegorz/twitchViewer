@@ -9,7 +9,7 @@
 "use strict";
 
 const engine = {
-	users: ['bobross', 'sandexperiment', 'timsww', 'soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
+	users: ['bobross' , 'sandexperiment', 'timsww', 'soushibo', 'streamerhouse', 'Bananasaurus_Rex', 'freecodecamp','polskiestrumyki', 'ESL_SC2', 'cretetion',  'storbeck', 'habathcx', 'RobotCaleb', 'noobs2ninjas', '123', 'kubon', ],// array of users and their channels
 
 	// app makes three request to Twitch API
 	getUsersData: function (single) {
