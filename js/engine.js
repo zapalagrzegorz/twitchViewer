@@ -85,7 +85,7 @@ const engine = {
 		function ajaxRequest(call, user) {
 			return $.ajax({
 				type: 'get',
-				url: 'https://wind-bow.gomix.me/twitch-api/' + call + '/' + user,
+				url: '/wind-bow.glitch.me/' + call + '/' + user,
 				headers: {
 					Accept: 'application/vnd.twitchtv.v3+json'
 				}
