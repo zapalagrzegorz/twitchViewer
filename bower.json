@@ -1,9 +1,9 @@
 {
-  "name": "TwitchViewer",
+  "name": "twitchviewer",
   "version": "0.0.1",
   "dependencies": {
     "jquery": "^3.1.1",
-    "bootstrap": "^4.0.0"
+    "bootstrap": "^4.0.0-alpha.6"
   },
   "private": true,
   "homepage": "https://github.com/zapalagrzegorz/twitchViewer",
@@ -21,6 +21,5 @@
     "tests"
   ],
   "devDependencies": {
-    "bootstrap": "v4.0.0-alpha.6"
   }
 }

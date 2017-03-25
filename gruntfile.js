@@ -1,10 +1,10 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-    // Project configuration.
+	// Project configuration.
 	grunt.initConfig({
 		watch: {
 			scripts: {
-				files: ['scss/*.scss'],
+				files: ['scss/*.scss', 'js/*.js'],
 			}
 		},
 		browserSync: {
@@ -23,12 +23,27 @@ module.exports = function(grunt) {
 					}
 				}
 			}
+		},
+		sass: {
+			options: {
+				sourceMap: true
+			},
+			dist: {
+				files: {
+					'css\main.css': 'main.scss'
+				}
+			}
 		}
+
 	});
-    // Load the plugins tasks 
+	// Load the plugins tasks 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-browser-sync');
-    // Default task(s).
-	grunt.registerTask('default', ['browserSync', 'watch']);
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-sass');
+
+
+	// Default task(s).
+	grunt.registerTask('default', ['browserSync', 'watch', 'babel']);
 
 };

@@ -1,9 +1,9 @@
 // app makes three request to Twitch APIs
 // I couldn't divided function call getUsersData into seperate properties as they're not independent.
-// First it checks if users is streaming '/streams'. If responded positively, data is enough for that user, and produces output.
-// If not, it makes call to /users/. If there isn't such user it's enough to produce adequate output.
+// First it checks if users is streaming '/streams'. If responded positively, response data is enough for that user, and produces output.
+// If not, it makes another call to /users/. If there isn't such user it's enough to produce adequate output.
 // If users exists it makes call to corresponding /channel/ to get further data.
-// Reponse data is transferred to next call (/streams/ -> /users/ -> /channel/ provided it gets the result
+// Reponse data is transferred to other call (/streams/ -> /users/ -> /channel/ provided it gets the result
 // so that it produces output only when a call is finished for that user. 
 
 "use strict";
@@ -91,7 +91,7 @@ const engine = {
 		function ajaxRequest(call, user) {
 			return $.ajax({
 				type: 'get',
-				url: 'https://wind-bow.gomix.me/twitch-api/' + call + '/' + user,
+				url: '' + call + '/' + user,
 				headers: {
 					Accept: 'application/vnd.twitchtv.v3+json'
 				}
