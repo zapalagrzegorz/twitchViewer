@@ -1,9 +1,4 @@
 $().ready(function () {
-	// $('#wiki-search-button').click($.proxy(engine.getData, engine));
-  // $('#wiki-search-random').click($.proxy(engine.getRandomData, engine))
-  	// $('body').prepend('<div class="loading"><img class="imgCenter" src="css/assets/loading.gif"></div>');
-	// $('header').hide();
-	// $('main').hide();
 	
   // $(document).bind('keypress',pressed);
 	$('#all').click(function(e){
