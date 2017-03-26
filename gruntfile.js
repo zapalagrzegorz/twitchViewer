@@ -107,6 +107,7 @@ module.exports = function (grunt) {
 	// Default task(s).
 	grunt.registerTask('default', ['browserSync', 'watch']);
 	grunt.registerTask('css', ['newer:sass', 'newer:cssmin']);
+	grunt.registerTask('css-force', ['sass', 'cssmin']);
 	grunt.registerTask('js', ['newer:concat', 'newer:babel', 'newer:uglify']);
 	grunt.registerTask('img', ['newer:imagemin']);
 
