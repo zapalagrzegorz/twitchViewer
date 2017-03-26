@@ -150,7 +150,7 @@ var engine = {
 					var user = {};
 					user.bio = responses[i][0].bio == null ? 'No bio available' : responses[i][0].bio.substring(0, 140).concat('...');
 					user.created_at = responses[i][0].created_at;
-					user.logo = responses[i][0].logo == null ? 'css/assets/Glitch.png' : responses[i][0].logo;
+					user.logo = responses[i][0].logo == null ? 'img/Glitch.png' : responses[i][0].logo;
 					user.display_name = responses[i][0].display_name;
 					usersData.push(user);
 					promisesChannels.push(ajaxRequest('channels', responses[i][0].name));
@@ -175,7 +175,7 @@ var engine = {
 					responses.push(arguments);
 				}
 				for (var i in responses) {
-					usersData[i].profile_banner = responses[i][0].video_banner == null ? 'css/assets/profileLarge.png' : responses[i][0].video_banner;
+					usersData[i].profile_banner = responses[i][0].video_banner == null ? 'img/profileLarge.png' : responses[i][0].video_banner;
 					usersData[i].followers = responses[i][0].followers;
 					usersData[i].status = responses[i][0].status == null ? 'no status' : responses[i][0].status;
 					if (usersData[i].status.length > 44) {
@@ -245,7 +245,7 @@ var engine = {
 		}
 
 		function showUnkownUsers(user) {
-			var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-unavailable"><div class="shadows"><div class="channelPreview">' + '<img class="img" src="css/assets/nostream.gif"></div>' + '<div class="channelDescription">' + '<h3>' + user.message + ' or does not exist</h3></div></div></article>';
+			var userHTML = '<article class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 channel user-unavailable"><div class="shadows"><div class="channelPreview">' + '<img class="img" src="img/nostream.gif"></div>' + '<div class="channelDescription">' + '<h3>' + user.message + ' or does not exist</h3></div></div></article>';
 			$('#streamContent').append(userHTML);
 		}
 		// function handleError(jqXHR, error, errorThrown) {
@@ -261,3 +261,66 @@ var engine = {
 		}
 	}
 };
+
+"use strict";
+
+$().ready(function () {
+
+	init();
+
+	engine.getUsersData();
+
+	function init() {
+		$('#searchLoading').hide();
+
+		$('.nav-item').click(function (e) {
+			$('.navbar li.active').removeClass('active');
+			var $this = $(this);
+			if (!$this.hasClass('active')) {
+				$this.addClass('active');
+			}
+			e.preventDefault();
+		});
+
+		$('#all').click(function (e) {
+			e.preventDefault();
+			$('.user-online').show();
+			$('.user-offline').show();
+			$('.user-unavailable').show();
+		});
+
+		$('#online').click(function (e) {
+			e.preventDefault();
+			$('.user-offline').hide();
+			$('.user-unavailable').hide();
+			$('.user-online').show();
+		});
+
+		$('#offline').click(function (e) {
+			e.preventDefault();
+			$('.user-online').hide();
+			$('.user-unavailable').hide();
+			$('.user-offline').show();
+		});
+
+		$(document).bind('keypress', pressed);
+
+		$('#searchUser').click(function (e) {
+			e.preventDefault();
+			executeSearch();
+		});
+
+		function executeSearch() {
+			var searchValue = $("#searchValue").val();
+			engine.getUsersData(searchValue);
+		}
+
+		function pressed(e) {
+			if (e.keyCode === 13) {
+				e.preventDefault();
+				executeSearch();
+			}
+		}
+	}
+});
+//# sourceMappingURL=scripts.js.map

@@ -2,3 +2,6 @@
 /.eslintrc.json
 /README.md
 /bower_components
+/js/main.js
+/js/vendor.js
+/js/vendor.js
