@@ -1,5 +1,12 @@
 module.exports = function (grunt) {
 
+
+// Tablica zawierająca zewnętrzne javascripty, które chcemy konkatenować do vendor.js
+var vendorJs = [
+	'bower_components/jquery/dist/jquery.min.js',
+	'bower_components/tether/dist/js/tether.min.js',
+	'bower_components/bootstrap/dist/js/bootstrap.min.js'
+];
 	// Project configuration.
 	grunt.initConfig({
 		watch: {
@@ -27,7 +34,12 @@ module.exports = function (grunt) {
 		concat: {
 			dist: {
 				files: {
-					'js/main.js': ['js/src/*.js']
+					'css/src/style.scss': 
+						['bower_components/bootstrap/scss/bootstrap.scss', 
+						'css/src/normalize.css', 
+						'css/src/main.scss'],
+					'js/vendor.js': [vendorJs],
+					'js/main.js' : ['js/src/engine.js', 'js/src/main.js', 'js/src/plugins'],
 				}
 			}
 		},
@@ -37,18 +49,20 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: {
-					'css/src/main.css': 'css/src/main.scss'
+					'css/bootstrap.css': ['bower_components/bootstrap/scss/bootstrap.scss'],
+					'css/main.css': ['css/src/main.scss']
 				}
 			}
 		},
 		cssmin: {
-			preparation: {
+			dist: {
 				options: {
 					mergeIntoShorthands: false,
 					roundingPrecision: -1
 				},
 				files: {
-					'css/style.min.css': ['css/src/normalize.css', 'css/src/main.css']
+					'css/main.min.css': ['css/normalize.css', 'css/main.css'],
+					'css/bootstrap.min.css': ['css/bootstrap.css']
 				}
 			}
 		}
