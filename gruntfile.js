@@ -91,12 +91,23 @@ module.exports = function (grunt) {
 					'css/main.min.css': ['css/src/bootstrap.css', 'css/src/main.css', 'css/src/font-awesome.css'],
 				}
 			}
+		},
+		imagemin: {
+			dist: {
+				files: [{
+					expand: true,                  // Enable dynamic expansion 
+					cwd: 'img/src/',                   // Src matches are relative to this path 
+					src: ['**/*.{png,jpg,gif}'],   // Actual patterns to match 
+					dest: 'dist/'                  // Destination path prefix 
+				}]
+     		}
 		}
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['browserSync', 'watch', 'babel']);
-	grunt.registerTask('css', ['sass', 'cssmin']);
-	grunt.registerTask('js', ['clean', 'concat', 'babel', 'uglify']);
+	grunt.registerTask('default', ['browserSync', 'watch']);
+	grunt.registerTask('css', ['newer:sass', 'newer:cssmin']);
+	grunt.registerTask('js', ['newer:concat', 'newer:babel', 'newer:uglify']);
+	grunt.registerTask('img', ['newer:imagemin']);
 
 };

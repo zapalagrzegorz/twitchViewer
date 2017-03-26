@@ -15,9 +15,11 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^2.0.0",
+    "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-css-clean": "^0.1.0",
+    "grunt-newer": "^1.2.0",
     "grunt-sass": "^2.0.0",
     "load-grunt-tasks": "^3.5.2"
   },
